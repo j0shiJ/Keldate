@@ -6,7 +6,7 @@ import 'package:keldate/theme/provider/theme_provider.dart';
 import 'package:keldate/theme/theme_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'screens/splash_screen.dart';
+import 'screens/Auth/splash_screen.dart';
 
 void main() {
   runApp(

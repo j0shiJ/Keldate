@@ -3,42 +3,45 @@ import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:keldate/screens/Signup_Screen.dart';
-import 'package:keldate/theme/provider/theme_provider.dart';
+import 'package:keldate/screens/Auth/otp_screen.dart';
+
 import 'package:keldate/theme/theme_helper.dart';
 import 'package:keldate/widgets/Commons.dart';
-import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const String routeName = '/login';
-  const LoginScreen({super.key});
-
+class SignupScreen extends StatefulWidget {
+  static const String routeName = '/signup';
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-
-  static Widget builder(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => ThemeProvider(), child: LoginScreen());
-  }
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  bool _isChecked = false; // Checkbox state
+class _SignupScreenState extends State<SignupScreen> {
+  bool _isChecked = false;
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _otpController = TextEditingController();
-  String _countryCode = '+1'; // Default country code
-  XFile? _pickedImage; // Holds the selected image
+  String _countryCode = '+1';
+  XFile? _pickedImage;
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _pickedImage = image;
-    });
+    // Request storage permission
+    var status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      setState(() {
+        _pickedImage = image;
+      });
+    } else {
+      // Handle the case when permission is denied
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Permission denied to access the photo library')),
+      );
+    }
   }
 
   @override
@@ -46,7 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  String signin = "Sign in";
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -55,42 +57,29 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(21.h), // Set the height of the AppBar
+          preferredSize: Size.fromHeight(21.h),
           child: AppBar(
-            automaticallyImplyLeading:
-                false, // To remove the default back button
+            automaticallyImplyLeading: false,
             flexibleSpace: Stack(
               fit: StackFit.expand,
               children: [
-                // Background Image
                 Image.asset(
-                  'assets/images/appbarBGimg.png', // Replace with your background image
+                  'assets/images/appbarBGimg.png',
                   fit: BoxFit.cover,
                 ),
-                // Logo and Text at the bottom left
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: 2.5
-                          .h, // Adjusted left padding to move it a bit to the left
-                      bottom: 2.8
-                          .h), // Adjusted bottom padding for vertical positioning
+                  padding: EdgeInsets.only(left: 2.5.h, bottom: 2.8.h),
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Logo Image
-                        Container(
-                          child: SvgPicture.asset(
-                            'assets/images/Group.svg',
-                            height: 4.7.h,
-                          ),
+                        SvgPicture.asset(
+                          'assets/images/Group.svg',
+                          height: 4.7.h,
                         ),
-                        SizedBox(
-                            height:
-                                1.6.h), // Reduced spacing between logo and text
-                        // Text below the logo
+                        SizedBox(height: 1.6.h),
                         Row(
                           children: [
                             Text(
@@ -98,8 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(
                                 color: LightCodeColors().whiteA700,
                                 fontSize: 21.sp,
-                                height: 0.12
-                                    .h, // Adjust line height to reduce space between lines
+                                height: 0.12.h,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.bold,
                               ),
@@ -109,8 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(
                                 color: LightCodeColors().whiteA700,
                                 fontSize: 20.sp,
-                                height: 0.12
-                                    .h, // Adjust line height to reduce space between lines
+                                height: 0.12.h,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                               ),
@@ -123,9 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-            backgroundColor:
-                Colors.transparent, // Make the AppBar background transparent
-            elevation: 0, // Remove the AppBar shadow
+            backgroundColor: Colors.transparent,
+            elevation: 0,
           ),
         ),
         body: Container(
@@ -138,62 +124,89 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   CustomButton(
                     text: 'Valider',
-                    onPressed: () {},
-                    // width: Adaptive.w(29),
-                    // height: 2.h,
+                    onPressed: () {
+                      Navigator.pushNamed(context, OtpScreen.routeName);
+                    },
                     width: 29.3,
                   )
                 ],
               ),
               Padding(
-                  padding: EdgeInsets.fromLTRB(0, 2.5.h, 0, 2.5.h),
-                  child: CustomTextFormField(
-                      controller: _phoneController,
-                      labelText: "Enter your mobile number",
-                      hintText: "Mobile Number",
-                      prefixIcon: Icons.phone_iphone_outlined)),
+                padding: EdgeInsets.fromLTRB(0, 2.5.h, 0, 2.5.h),
+                child: CustomTextFormField(
+                  controller: _emailController,
+                  labelText: "Enter your email",
+                  hintText: "Email",
+                  prefixIcon: Icons.email_outlined,
+                ),
+              ),
               Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 1.5.h),
-                  child: CustomTextFormField(
-                      controller: _otpController,
-                      labelText: "Enter the code",
-                      hintText: "Verification code",
-                      prefixIcon: Icons.lock)),
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 1.5.h),
+                child: Row(
+                  children: [
+                    CountryCodePicker(
+                      onChanged: (country) {
+                        setState(() {
+                          _countryCode = country.dialCode!;
+                        });
+                      },
+                      backgroundColor: Colors.white,
+                      initialSelection: 'FR',
+                      favorite: ['+33', 'FR', '+91', 'IN'],
+                      showCountryOnly: false,
+                      showOnlyCountryWhenClosed: false,
+                      alignLeft: false,
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: CustomTextFormField(
+                        width: 52.14.w,
+                        controller: _phoneController,
+                        labelText: "Phone number",
+                        hintText: "Phone number",
+                        prefixIcon: Icons.phone_iphone_outlined,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Row(
                 children: [
-                  CustomInkWellTextButton(
-                    onPressed: () {},
-                    text: "  Resend verification code?",
-                    fontSize: 13.sp,
-                  ),
-                  Spacer(),
-                  CustomInkWellTextButton(
-                    onPressed: () {},
-                    text: "Get code",
-                    fontSize: 13.sp,
+                  Text(
+                    "Profile Photo",
+                    style: TextStyle(
+                      color: Color(0xFF000000),
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.sp,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 20.w,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Don't have an Account? "),
-                  CustomInkWellTextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, SignupScreen.routeName);
-                    },
-                    text: "Sign Up",
-                    fontSize: 16.sp,
-                  )
-                ],
+              SizedBox(height: 2.h),
+              // Container for image picker
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                ),
+                width: double.infinity,
+                height: 33.h, // Height for the image picker container
+                child: Center(
+                  child: _pickedImage == null
+                      ? IconButton(
+                          icon: Icon(Icons.add_a_photo_outlined, size: 5.h),
+                          onPressed: _pickImage,
+                        )
+                      : Image.file(
+                          File(_pickedImage!.path),
+                          fit: BoxFit.cover,
+                        ),
+                ),
               ),
               Spacer(),
               Row(
                 children: [
-                  // Checkbox
                   Transform.scale(
                     scale: 0.8,
                     child: Checkbox(
@@ -205,31 +218,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                   ),
-                  // Agreement Text
                   Expanded(
                     child: RichText(
                       text: TextSpan(
                         text: "I have read and agree to the ",
                         style: TextStyle(
-                          color: Colors.black, // Default text color
+                          color: Colors.black,
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
-                          fontSize: 14.sp, // Font size using Sizer
+                          fontSize: 14.sp,
                         ),
                         children: [
                           TextSpan(
                             text: "privacy policy and terms",
                             style: TextStyle(
-                              color:
-                                  Color(0xFF4D81E7), // #4D81E7 for link color
+                              color: Color(0xFF4D81E7),
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w400,
                               fontSize: 14.sp,
                             ),
-                            // You can add an onTap gesture here for privacy policy and terms
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                // Handle privacy policy and terms click
                                 print("Privacy policy and terms clicked");
                               },
                           ),
