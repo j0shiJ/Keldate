@@ -156,3 +156,57 @@ class CustomInkWellTextButton extends StatelessWidget {
     );
   }
 }
+
+class CustomSearchBar extends StatelessWidget {
+  final String hintText;
+  final double? height; // Height of the search bar
+  final double? width; // Width of the search bar
+
+  const CustomSearchBar({
+    Key? key,
+    required this.hintText,
+    this.height, // Default height
+    this.width, // Default width (full width)
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width != null ? width!.w : (31000 / 393).w, // Set the width
+      height: height != null ? height!.h : (4800 / 852).h, // Set the height
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            blurRadius: 5,
+            spreadRadius: 1,
+            offset: const Offset(0, 3), // Changes position of shadow
+          ),
+        ],
+      ),
+      child: TextField(
+        style: TextStyle(
+          color: Colors.grey,
+          fontFamily: 'Inter', // Set the font family to Inter
+        ),
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.search,
+            color: Colors.grey, // Color of the search icon
+          ),
+          hintText: hintText, // Variable hint text
+          hintStyle: TextStyle(
+            color: Colors.grey, // Color of the hint text
+            fontFamily: 'Inter', // Set the font family to Inter
+          ),
+          border: InputBorder.none, // Removes the default border
+          contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 12.0), // Padding inside the text field
+        ),
+      ),
+    );
+  }
+}

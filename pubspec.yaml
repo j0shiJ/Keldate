@@ -71,6 +71,19 @@ flutter:
     - assets/images/Group.svg
     - assets/images/logo.png
     - assets/images/appbarBGimg.png
+    - assets/images/OTP.png
+    - assets/icons/Events.png
+    - assets/icons/Attendance.png
+    - assets/icons/Agenda.png
+    - assets/icons/Epocket.png
+    - assets/icons/Forms.png
+    - assets/icons/Contacts.png
+    - assets/icons/Messages.png
+    - assets/icons/PersonalData.png
+    - assets/icons/RollingHeritage.png
+    - assets/icons/RealEstate.png
+    - assets/icons/Other.png
+    - assets/icons/etc.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

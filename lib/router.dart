@@ -1,11 +1,13 @@
 // router.dart
 
 import 'package:flutter/material.dart';
-import 'package:keldate/screens/Signup_Screen.dart';
-import 'package:keldate/screens/login_screen.dart';
-import 'package:keldate/screens/otp_Screen.dart';
+import 'package:keldate/screens/Auth/otp_screen.dart';
 
-import 'package:keldate/screens/splash_screen.dart';
+import 'package:keldate/screens/Auth/signup_screen.dart';
+import 'package:keldate/screens/Auth/login_screen.dart';
+import 'package:keldate/screens/Home/home_screen.dart';
+
+import 'package:keldate/screens/Auth/splash_screen.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -18,6 +20,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case SignupScreen.routeName:
         return MaterialPageRoute(builder: (_) => SignupScreen());
+      case HomeScreen.routeName:
+        return MaterialPageRoute(builder: (_) => HomeScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
