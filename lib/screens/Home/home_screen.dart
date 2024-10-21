@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:keldate/widgets/CustomBottomNavBar.dart';
-import 'package:sizer/sizer.dart';
+import 'package:keldate/screens/Home/CustomBottomNavBar.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';

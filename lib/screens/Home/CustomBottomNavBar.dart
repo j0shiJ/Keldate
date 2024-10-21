@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keldate/screens/Home/Events_screen.dart';
 import 'package:keldate/widgets/Commons.dart';
 import 'package:sizer/sizer.dart';
 
@@ -12,24 +14,24 @@ class CustomBottomNavBar extends StatefulWidget {
 class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   // List of screens corresponding to each icon in the bottom navigation bar
   bool _isSwitchOn = false;
+
   final List<Widget> screens = [
-    Center(child: Text('Events Screen')),
+    EventsScreen(),
     Center(child: Text('Attendance Screen')),
     Center(child: Text('Agenda Screen')),
     Center(child: Text('Epocket Screen')),
     Center(child: Text('Forms Screen')),
+    Center(child: Text('Forms Screen')),
+    Center(child: Text('Forms Screen')),
+    Center(child: Text('Forms Screen')),
+    Center(child: Text('Forms Screen')),
+    Center(child: Text('Forms Screen')),
+    Center(child: Text('Forms Screen')),
+    Center(child: Text('Forms Screen')),
+    Center(child: Text('Forms Screen')),
   ];
 
   // List of bottom navigation bar icons
-  final List<String> bottomNavIcons = [
-    'assets/icons/Events.png',
-    'assets/icons/Attendance.png',
-    'assets/icons/Agenda.png',
-    'assets/icons/Epocket.png',
-    'assets/icons/Forms.png',
-  ];
-
-  // List of icons for the bottom sheet
   final List<String> bottomSheetIcons = [
     'assets/icons/Events.png',
     'assets/icons/Attendance.png',
@@ -44,6 +46,35 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     'assets/icons/Other.png',
     'assets/icons/etc.png',
   ];
+  final List<String> iconNames = [
+    'Events',
+    'Attendance',
+    'Agenda',
+    'Epocket',
+    'Forms',
+    'Contacts',
+    'Messages',
+    'Personal Data',
+    'Rolling Heritage',
+    'Real Estate',
+    'Other',
+    'Etc.',
+  ];
+  // List of icons for the bottom sheet
+  // final List<String> bottomSheetIcons = [
+  //   'assets/icons/Events.png',
+  //   'assets/icons/Attendance.png',
+  //   'assets/icons/Agenda.png',
+  //   'assets/icons/Epocket.png',
+  //   'assets/icons/Forms.png',
+  //   'assets/icons/Contacts.png',
+  //   'assets/icons/Messages.png',
+  //   'assets/icons/PersonalData.png',
+  //   'assets/icons/RollingHeritage.png',
+  //   'assets/icons/RealEstate.png',
+  //   'assets/icons/Other.png',
+  //   'assets/icons/etc.png',
+  // ];
 
   // Current selected index for the bottom navigation bar
   int selectedIndex = 0;
@@ -80,18 +111,12 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     return Scaffold(
       // AppBar that stays on top of all screens
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight((21900 / 852).h),
+        preferredSize: Size.fromHeight((7000 / 852).h),
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: const Color(0xffF4F7FB),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(30), // Curved bottom left corner
-              bottomRight: Radius.circular(30), // Curved bottom right corner
-            ),
-          ),
           title: Padding(
-            padding: EdgeInsets.all((2400 / 393).w),
+            padding: EdgeInsets.fromLTRB((1000 / 393).w, 20, 0, 0),
             child: Column(
               children: [
                 Row(
@@ -167,22 +192,36 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      width: (9800 / 393).w,
+                    ),
+                    Container(
+                      height: (3100 / 852).h,
+                      width: (3100 / 852).h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors
+                            .white, // Correctly placed here in the BoxDecoration
+                      ),
+                      child: Icon(
+                        CupertinoIcons.heart,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    SizedBox(
+                      width: (1000 / 393).w,
+                    ),
+                    CircleAvatar(
+                      radius: (2000 / 852).h,
+                    ),
                   ],
                 ),
                 SizedBox(
                   height: (3000 / 852).h,
                 ),
-                Row(
-                  children: [
-                    CustomSearchBar(
-                      hintText: 'Search...',
-                      onChanged: (value) {
-                        // Handle search logic here
-                        print(value);
-                      },
-                    ),
-                  ],
-                )
+                // Row(
+                //   children: [CustomSearchBar(hintText: "Professional")],
+                // )
               ],
             ),
           ),
@@ -198,34 +237,60 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       backgroundColor: Colors.white,
       bottomNavigationBar: Container(
         color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            for (int index = 0; index < bottomNavIcons.length; index++)
-              Flexible(
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedIndex = index; // Update selected index
-                    });
-                  },
-                  child: Image.asset(
-                    bottomNavIcons[index],
-                    height: 30.0,
-                    width: 30.0,
-                    color: selectedIndex == index
-                        ? Colors.blue
-                        : Colors.black, // Highlight selected icon in blue
+        padding: EdgeInsets.symmetric(
+            horizontal: (2400 / 393).w, vertical: (3000 / 852).h),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              for (int index = 0; index < bottomSheetIcons.length; index++)
+                Container(
+                  height: (5000 / 852).h,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedIndex = index; // Update selected index
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: (2000 / 393).w),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              bottomSheetIcons[index],
+                              height: (2779 / 393).w,
+                              width: (2779 / 393).w,
+                              color: selectedIndex == index
+                                  ? Colors.blue
+                                  : Colors
+                                      .black, // Highlight selected icon in blue
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              iconNames[index],
+                              style: TextStyle(
+                                color: selectedIndex == index
+                                    ? Colors.blue
+                                    : Colors.black,
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
+              // Button to open the bottom sheet
+              IconButton(
+                icon: Icon(Icons.more_horiz, color: Colors.black),
+                onPressed: () => showIconGrid(context),
               ),
-            // Button to open the bottom sheet
-            IconButton(
-              icon: Icon(Icons.more_horiz, color: Colors.black),
-              onPressed: () => showIconGrid(context),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
